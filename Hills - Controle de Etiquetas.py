@@ -7,9 +7,9 @@ from ttkbootstrap.style import Style
 from ttkbootstrap.constants import *
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name(r'O:\Shared drives\Estoque de etiquetas\Codes\Codes\gg.json', scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name(r'O:\Shared drives\credencial.json', scope)
 client = gspread.authorize(creds)
-sheet = client.open_by_key('1Y-x6iyeN2Hwu10lXao3RsyqapC2164LGrizebriOVYc').sheet1
+sheet = client.open_by_key('base_sheets').sheet1
 
 historico_operacoes = []
 
@@ -135,7 +135,7 @@ def desfazer_ultima_operacao():
 def salvar_estoque():
     try:
         dados = sheet.get_all_records()
-        nova_aba = client.open_by_key('1Y-x6iyeN2Hwu10lXao3RsyqapC2164LGrizebriOVYc').add_worksheet(title="Estoque Backup", rows="100", cols="20")
+        nova_aba = client.open_by_key('base_sheets').add_worksheet(title="Estoque Backup", rows="100", cols="20")
         nova_aba.append_row(["SKU", "Quantidade"])
         for item in dados:
             nova_aba.append_row([item['SKU'], item['Quantidade']])
@@ -144,7 +144,7 @@ def salvar_estoque():
         messagebox.showerror("Erro", f"Erro ao salvar estoque: {str(e)}")
 
 app = tk.Tk()
-app.title("Hill's - Estoque de Etiquetas")
+app.title("Gerenciador de Estoque")
 app.geometry("550x350")
 style = Style(theme = "cyborg")
 
